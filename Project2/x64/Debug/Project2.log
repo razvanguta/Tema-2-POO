@@ -1,0 +1,5 @@
+﻿  Source.cpp
+C:\Users\gutar\source\repos\Project2\Source.cpp(96): warning C4715: 'Set_Pair::operator[]': not all control paths return a value
+C:\Users\gutar\source\repos\Project2\Source.cpp(157): warning C4715: 'Stack_Pair::peek': not all control paths return a value
+C:\Users\gutar\source\repos\Project2\Source.cpp(244): warning C4715: 'Queue_Pair::qfront': not all control paths return a value
+  Project2.vcxproj -> C:\Users\gutar\source\repos\Project2\x64\Debug\Project2.exe
