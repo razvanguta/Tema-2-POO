@@ -8,12 +8,27 @@ class Pair {
 public:
 	Pair() {} // constructor default
 	Pair(int a, int b); //constructor pereche
+	Pair(const Pair& per); //copy-constructor
+	Pair& operator =(const Pair& per); //egal
 	friend istream& operator>>(istream& in, Pair& per); //citire
-	friend ostream& operator<<(ostream& out,const Pair& per); //afisare
+	friend ostream& operator<<(ostream& out, const Pair& per); //afisare
 	~Pair();
 };
 Pair::Pair(int a, int b) : a(a), b(b)
 {
+}
+Pair::Pair(const Pair& per)
+{
+	a = per.a;
+	b = per.b;
+}
+Pair& Pair:: operator=(const Pair& per)
+{
+	if (this->a != per.a)
+		this->a = per.a;
+	if (this->b != per.b)
+		this->b = per.b;
+	return *this;
 }
 istream& operator>>(istream& in, Pair& per)
 {
@@ -30,7 +45,7 @@ ostream& operator<<(ostream& out, const Pair& per)
 }
 Pair::~Pair()
 {
-	
+
 }
 
 //Multime_pereche
@@ -41,8 +56,10 @@ protected:
 public:
 	Set_Pair() {};//constructor default
 	Set_Pair(int n);//constructor care primeste nr de elemente ale multimii de prechi
+	Set_Pair(const Set_Pair& sp); //copy constructor
+	Set_Pair& operator=(const Set_Pair& sp);// egal
 	friend istream& operator>>(istream& in, Set_Pair& sp);//citim multimea de perechi
-	friend ostream& operator<<(ostream& out,const Set_Pair& sp);//afisam multimea de perechi
+	friend ostream& operator<<(ostream& out, const Set_Pair& sp);//afisam multimea de perechi
 	Pair& operator[](int index); // supraincarcam [] pentru a putea accesa mai usor elementele din multime
 	int getnrel() { return this->n; }//returneza nr de elemente ale unei multimi
 	~Set_Pair();//destructor multime
@@ -57,6 +74,27 @@ Set_Pair::Set_Pair(int n) : n(n)
 		cout << "Allocation failure\n";
 		exit(EXIT_FAILURE);
 	}
+}
+Set_Pair::Set_Pair(const Set_Pair& sp)
+{
+	p = new Pair[sp.n];
+	n = sp.n;
+	for (int i = 0; i < sp.n; i++)
+	{
+		Pair* newper = new Pair(sp.p[i]);
+		p[i] = *newper;
+		delete newper;
+	}
+}
+Set_Pair& Set_Pair:: operator=(const Set_Pair& sp)
+{
+	this->n = sp.n;
+	this->p = new Pair[sp.n];
+	for (int i = 0; i < sp.n; i++)
+	{
+		this->p[i] = sp.p[i];
+	}
+	return *this;
 }
 istream& operator>>(istream& in, Set_Pair& sp)
 {
@@ -75,7 +113,7 @@ istream& operator>>(istream& in, Set_Pair& sp)
 	return in;
 
 }
-ostream& operator<<(ostream& out,const Set_Pair& sp)
+ostream& operator<<(ostream& out, const Set_Pair& sp)
 {
 	cout << "Afisam multimea de perechi\n";
 	for (int i = 0; i < sp.n; i++)
@@ -101,13 +139,14 @@ Set_Pair::~Set_Pair()
 }
 
 //Stiva_perche
-class Stack_Pair: public Set_Pair {
+class Stack_Pair : public Pair {
 	int top;
 	int maxsize;
 	Pair* st;
-	Set_Pair ala;
 public:
 	Stack_Pair(int nrel); //constructor care primeste nr de elemente al multimii de perechi
+	Stack_Pair(const Stack_Pair& stv);
+	Stack_Pair& operator=(const Stack_Pair& stv);
 	void push(const Pair& p); //adauga element de tip pereche in stiva
 	void pop(); //sterge element de tip pereche din stiva
 	Pair peek();//returneaza vf stivei
@@ -127,6 +166,28 @@ Stack_Pair::Stack_Pair(int nrel)
 		exit(EXIT_FAILURE);
 	}
 }
+Stack_Pair::Stack_Pair(const Stack_Pair& stv)
+{
+	st = new Pair[stv.maxsize];
+	top = stv.top;
+	maxsize = stv.maxsize;
+	for (int i = 0; i <= top; i++)
+	{
+		st[i] = stv.st[i];
+	}
+}
+Stack_Pair& Stack_Pair::operator=(const Stack_Pair& stv)
+{
+	this->st = new Pair[stv.maxsize];
+	this->top = stv.top;
+	this->maxsize = stv.maxsize;
+	for (int i = 0; i <= stv.top; i++)
+	{
+		
+		this->st[i] = stv.st[i];
+	}
+	return *this;
+}
 void Stack_Pair::push(const Pair& p)
 {
 	if (top == maxsize)
@@ -135,25 +196,25 @@ void Stack_Pair::push(const Pair& p)
 	{
 		top = top + 1;
 		st[top] = p;
-		
+
 	}
 }
 void Stack_Pair::pop()
 {
 	if (top < 0)
 		cout << "Stack underflow\n";
-		else
-			top=top-1;
+	else
+		top = top - 1;
 }
 Pair Stack_Pair::peek()
 {
-	
+
 	if (top < 0)
 	{
 		cout << "Stack is empty\n";
 	}
 	else
-	return st[top];
+		return st[top];
 }
 bool Stack_Pair::empty()
 {
@@ -172,13 +233,14 @@ Stack_Pair::~Stack_Pair()
 }
 
 //Coada_Pereche
-class Queue_Pair: public Set_Pair{
+class Queue_Pair : public Set_Pair {
 	Pair* q;
 	int front;
 	int back;
 	int maxsize;
 public:
 	Queue_Pair(int nrel);
+	Queue_Pair(const Queue_Pair& qp);
 	void enqueue(const Pair& p);
 	void dequeue();
 	Queue_Pair& operator=(const Queue_Pair& qp);
@@ -188,8 +250,8 @@ public:
 };
 Queue_Pair::Queue_Pair(int nrel)
 {
-	  front = 0;
-	  back = 0;
+	front = 0;
+	back = 0;
 	maxsize = nrel;
 	try {
 		q = new Pair[nrel];
@@ -198,6 +260,17 @@ Queue_Pair::Queue_Pair(int nrel)
 	{
 		cout << "Allocation failure\n";
 		exit(EXIT_FAILURE);
+	}
+}
+Queue_Pair::Queue_Pair(const Queue_Pair& qp)
+{
+	front = qp.front;
+	maxsize = qp.maxsize;
+	back = qp.back;
+	q = new Pair[this->maxsize];
+	for (int i = 0; i < qp.back; i++)
+	{
+		q[i] = qp.q[i];
 	}
 }
 void Queue_Pair::enqueue(const Pair& p)
@@ -238,7 +311,7 @@ Queue_Pair& Queue_Pair::operator=(const Queue_Pair& qp)
 Pair Queue_Pair::qfront()
 {
 	if (front == back)
-		cout << "Queue is empty\n"; 
+		cout << "Queue is empty\n";
 	else
 		return q[front];
 }
@@ -257,13 +330,13 @@ Queue_Pair::~Queue_Pair()
 	front = -1;
 	maxsize = 0;
 }
-void simulation(Queue_Pair& q1, Queue_Pair& q2,Set_Pair& a, Stack_Pair& s) //simuleaza stiva folosind 2 cozi
+void simulation(Queue_Pair& q1, Queue_Pair& q2, Set_Pair& a, Stack_Pair& s) //simuleaza stiva folosind 2 cozi
 {
 	int n = a.getnrel();
 	for (int i = 0; i < n; i++)
 	{
 		cout << endl;
-	    Pair x = a[i];
+		Pair x = a[i];
 		q2.enqueue(x);
 		s.push(x);
 		while (!q1.empty())
@@ -271,7 +344,7 @@ void simulation(Queue_Pair& q1, Queue_Pair& q2,Set_Pair& a, Stack_Pair& s) //sim
 			q2.enqueue(q1.qfront());
 			q1.dequeue();
 		}
-		Queue_Pair qaux=q1;
+		Queue_Pair qaux = q1;
 		q1 = q2;
 		q2 = qaux;
 	}
@@ -284,16 +357,117 @@ void simulation(Queue_Pair& q1, Queue_Pair& q2,Set_Pair& a, Stack_Pair& s) //sim
 }
 int main()
 {
+
+	//citirea a n obiecte de tip Set_Pair si afisarea lor
+	int n;
+	cin >> n;
+	Set_Pair* v = new Set_Pair[n];
+	for (int i = 0; i < n; i++)
+	{
+		cin >> v[i];
+	}
+	for (int i = 0; i < n; i++)
+	{
+		cout << v[i];
+	}
+	delete[] v;
+	//????
 	/*Pair a(1, 1), b(1, 1), c(2, 3), d(2, 3), e(2, 5);
 	Stack_Pair st(1);
 	st.push(a);
 	st.peek();
 	st.pop();
 	st.peek();*/
-	Set_Pair a;
+
+
+	//test stiva simulata prin 2 cozi;
+	/*Set_Pair a;
 	cin >> a;
 	Stack_Pair s(a.getnrel());
 	Queue_Pair q1(a.getnrel()), q2(a.getnrel());
-	simulation(q1, q2,a,s);
+	simulation(q1, q2, a, s);*/
+
+
+	//test op= si copy constructor pt Pair
+	/*Pair a(1, 1), b(-8, 3);
+	cout << a << " " << b << " ";
+	Pair c = b;
+	b = a;
+	cout << a << " " << b << " " << c;*/
+
+
+	//test op= si copy constructor pt set_Pair
+	/*Set_Pair a;
+	cin >> a;
+	Set_Pair b = a;
+	Set_Pair c;
+	c = a;
+	cout << a << b << c;*/
+
+	//test op= si copy constructor pt stack_Pair
+	/*Pair a(1, 1), b(2, 1), c(2, 7), d(-1, 3), e(2, -5);
+	Stack_Pair stv(5);
+	stv.push(a);
+	stv.push(b);
+	stv.push(c);
+	stv.push(d);
+	stv.push(e);
+	Stack_Pair stv2 = stv;
+	Stack_Pair stv3(3);
+	stv3.push(b);
+	stv3.push(d);
+	stv3.push(a);
+	stv = stv3;
+	while (!stv2.empty())
+	{
+		cout << stv2.peek() <<endl;
+		stv2.pop();
+	}
+	cout << endl;
+	while (!stv.empty())
+	{
+		cout << stv.peek() <<endl;
+		stv.pop();
+	}
+	cout << endl;
+	while (!stv3.empty())
+	{
+		cout << stv3.peek() <<endl;
+		stv3.pop();
+	}
+	*/
+
+
+	//test op= si copy constructor pt queue_Pair
+	/*Pair a(1, 1), b(2, 1), c(2, 7), d(-1, 3), e(2, -5);
+	Queue_Pair stv(5);
+	stv.enqueue(a);
+	stv.enqueue(b);
+	stv.enqueue(c);
+	stv.enqueue(d);
+	stv.enqueue(e);
+	Queue_Pair stv2 = stv;
+	Queue_Pair stv3(3);
+	stv3.enqueue(b);
+	stv3.enqueue(d);
+	stv3.enqueue(a);
+	stv = stv3;
+	while (!stv2.empty())
+	{
+		cout << stv2.qfront() <<endl;
+		stv2.dequeue();
+	}
+	cout << endl;
+	while (!stv.empty())
+	{
+		cout << stv.qfront() << endl;
+		stv.dequeue();
+	}
+	cout << endl;
+	while (!stv3.empty())
+	{
+		cout << stv3.qfront() << endl;
+		stv3.dequeue();
+	}*/
 	return 0;
 }
