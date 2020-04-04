@@ -1,4 +1,4 @@
-//FORMA APROAPE FINALA
+//FORMA EXTREM DE APROAPE FINALA
 #include<iostream>
 using namespace std;
 
@@ -56,7 +56,7 @@ protected:
 	int n;
 	Pair* p;
 public:
-	Set_Pair() { };//constructor ~ default
+	Set_Pair() { };//constructor default
 	Set_Pair(int n);//constructor care primeste nr de elemente ale multimii de prechi
 	Set_Pair(const Set_Pair& sp); //copy constructor
 	Set_Pair& operator=(const Set_Pair& sp);// egal
@@ -127,7 +127,6 @@ istream& operator>>(istream& in, Set_Pair& sp)
 		sp.p[i] = per;
 	}
 	return in;
-
 }
 ostream& operator<<(ostream& out, const Set_Pair& sp)
 {
@@ -153,14 +152,14 @@ Set_Pair::~Set_Pair()
 	delete[] p;
 	n = 0;
 }
+
 //Stiva_perche
 class Stack_Pair : public Set_Pair {
 	int top;
 	int maxsize;
-	Pair* st;
 public:
 	Stack_Pair(int nrel); //constructor care primeste nr de elemente al multimii de perechi
-	Stack_Pair(const Stack_Pair& stv);
+	Stack_Pair(const Stack_Pair& stv);// copy-constructor
 	Stack_Pair& operator=(const Stack_Pair& stv);
 	void push(const Pair& p); //adauga element de tip pereche in stiva
 	void pop(); //sterge element de tip pereche din stiva
@@ -173,39 +172,25 @@ Stack_Pair::Stack_Pair(int nrel) : Set_Pair(nrel)
 {
 	top = 0;
 	maxsize = nrel;
-	try {
-		st = new Pair[nrel];
-	}
-	catch (bad_alloc elem)
-	{
-		cout << "Allocation failure\n";
-		exit(EXIT_FAILURE);
-	}
 }
-Stack_Pair::Stack_Pair(const Stack_Pair& stv) : Set_Pair(stv.top)
+Stack_Pair::Stack_Pair(const Stack_Pair& stv) : Set_Pair(stv.maxsize)
 {
-
-	st = new Pair[stv.maxsize];
-	p = new Pair[stv.maxsize];
 	top = stv.top;
 	maxsize = stv.maxsize;
 	for (int i = 0; i < top; i++)
 	{
-		st[i] = stv.st[i];
-		p[i] = stv.st[i];
+		p[i] = stv.p[i];
 	}
 }
 Stack_Pair& Stack_Pair::operator=(const Stack_Pair& stv) 
 {
-	this->st = new Pair[stv.maxsize];
 	this->p = new Pair[stv.maxsize];
 	this->top = stv.top;
 	this->n = stv.top;
 	this->maxsize = stv.maxsize;
 	for (int i = 0; i < stv.top; i++)
 	{
-		this->st[i] = stv.st[i];
-		this->p[i] = stv.st[i];
+		this->p[i] = stv.p[i];
 	}
 	return *this;
 }
@@ -215,12 +200,9 @@ void Stack_Pair::push(const Pair& per)
 		cout << "Stack overflow\n";
 	else
 	{
-		
-		st[top] = per;
 		p[top] = per;
 		top = top + 1;
 		n = top;
-
 	}
 }
 void Stack_Pair::pop()
@@ -237,7 +219,7 @@ Pair Stack_Pair::peek()
 		cout << "Stack is empty\n";
 	}
 	else
-		return st[top-1];
+		return p[top-1];
 }
 bool Stack_Pair::empty()
 {
@@ -250,14 +232,12 @@ bool Stack_Pair::empty()
 }
 Stack_Pair::~Stack_Pair()
 {
-	delete[] st;
 	maxsize = 0;
 	top = 0;
 }
 
 //Coada_Pereche
 class Queue_Pair : public Set_Pair {
-	Pair* q;
 	int front;
 	int back;
 	int maxsize;
@@ -277,25 +257,15 @@ Queue_Pair::Queue_Pair(int nrel) : Set_Pair(nrel)
 	front = 0;
 	back = 0;
 	maxsize = nrel;
-	try {
-		q = new Pair[nrel];
-	}
-	catch (bad_alloc elem)
-	{
-		cout << "Allocation failure\n";
-		exit(EXIT_FAILURE);
-	}
 }
-Queue_Pair::Queue_Pair(const Queue_Pair& qp) :Set_Pair(qp.back)
+Queue_Pair::Queue_Pair(const Queue_Pair& qp) :Set_Pair(qp.maxsize)
 {
 	front = qp.front;
 	maxsize = qp.maxsize;
 	back = qp.back;
-	q = new Pair[this->maxsize];
 	for (int i = 0; i < qp.back; i++)
 	{
-		q[i] = qp.q[i];
-		p[i] = qp.q[i];
+		p[i] = qp.p[i];
 	}
 }
 void Queue_Pair::enqueue(const Pair& per)
@@ -306,7 +276,6 @@ void Queue_Pair::enqueue(const Pair& per)
 	}
 	else
 	{
-		q[back] = per;
 		p[back] = per; 
 		back++;
 		n=back;
@@ -319,7 +288,7 @@ void Queue_Pair::dequeue()
 	else
 	{
 		for (int i = 0; i < back - 1; i++)
-			q[i] = q[i + 1], p[i] = p[i + 1];
+		 p[i] = p[i + 1];
 		back--;
 		n = back;
 	}
@@ -329,13 +298,10 @@ Queue_Pair& Queue_Pair::operator=(const Queue_Pair& qp)
 	this->front = qp.front;
 	this->maxsize = qp.maxsize;
 	this->back = qp.back;
-	
-	this->q = new Pair[this->maxsize];
 	this->p = new Pair[this->maxsize];
 	for (int i = 0; i < qp.back; i++)
 	{
-		this->q[i] = qp.q[i];
-		this->p[i] = qp.q[i];
+		this->p[i] = qp.p[i];
 	}
 	return *this;
 }
@@ -344,7 +310,7 @@ Pair Queue_Pair::qfront()
 	if (front == back)
 		cout << "Queue is empty\n";
 	else
-		return q[front];
+		return p[front];
 }
 bool Queue_Pair::empty()
 {
@@ -355,8 +321,6 @@ bool Queue_Pair::empty()
 }
 Queue_Pair::~Queue_Pair()
 {
-
-	delete[] q;
 	back = -1;
 	front = -1;
 	maxsize = 0;
@@ -411,7 +375,6 @@ int main()
 	delete[] v;*/
 	
 	//efectele mostenirii pt clasa Stack_Pair
-	//p1
 	/*Pair a(1, 1), b(2, 1), c(2, 7), d(-1, 3), e(2, -5);
 	Stack_Pair stv(5);
 	stv.push(a);
@@ -421,13 +384,6 @@ int main()
 	stv.push(e);
 	cout << stv[0] << " " << stv[1] << endl;
 	cout << stv;*/
-	//p2
-	/*Set_Pair a;
-	cin >> a;
-	Stack_Pair st(a.getnrel());
-	st.push(a[0]);
-	a = st;
-	cout << a;*/
 
 	//efectele mostenirii pt clasa Queue_Pair
 	/*Pair a(1, 1), b(2, 1), c(2, 7), d(-1, 3), e(2, -5);
@@ -536,8 +492,9 @@ int main()
 		q3.dequeue();
 	}*/
 
+
    //ilustrare functie virtuala
-  /*Set_Pair sp;
+   /* Set_Pair sp;
 	Stack_Pair stv(1);
 	Queue_Pair qp(1);
 	ilustrarevirtual(sp);
