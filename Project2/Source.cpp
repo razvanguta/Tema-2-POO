@@ -1,4 +1,3 @@
-//FORMA EXTREM DE APROAPE FINALA
 #include<iostream>
 using namespace std;
 
@@ -494,7 +493,7 @@ int main()
 
 
    //ilustrare functie virtuala
-   /* Set_Pair sp;
+   /*Set_Pair sp;
 	Stack_Pair stv(1);
 	Queue_Pair qp(1);
 	ilustrarevirtual(sp);
