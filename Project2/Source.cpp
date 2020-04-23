@@ -63,7 +63,7 @@ public:
 	friend ostream& operator<<(ostream& out, const Set_Pair& sp);//afisam multimea de perechi
 	Pair& operator[](int index); // supraincarcam [] pentru a putea accesa mai usor elementele din multime
 	int getnrel() { return this->n; }//returneza nr de elemente ale unei multimi
-	void addval(const Pair& per) { n++; p[n-1] = per; } //adauga element in multime 
+	void addval(const Pair& per) { n++; p[n-1] = per; } //adauga element in multime
 	void eraseval(int x) {
 		try {
 			if (x >= n)
@@ -71,7 +71,6 @@ public:
 		}catch (bool i)
 		{
 			cout << "Outside the range/n";
-			exit(EXIT_FAILURE);
 		}
 		for (int i = x; i < n - 1; i++) { p[i] = p[i + 1]; }   //sterge element din multime
 		n--;
@@ -87,7 +86,6 @@ Set_Pair::Set_Pair(int n) : n(n)
 	catch (bad_alloc elem)
 	{
 		cout << "Allocation failure\n";
-		exit(EXIT_FAILURE);
 	}
 }
 Set_Pair::Set_Pair(const Set_Pair& sp)
@@ -181,7 +179,7 @@ Stack_Pair::Stack_Pair(const Stack_Pair& stv) : Set_Pair(stv.maxsize)
 		p[i] = stv.p[i];
 	}
 }
-Stack_Pair& Stack_Pair::operator=(const Stack_Pair& stv) 
+Stack_Pair& Stack_Pair::operator=(const Stack_Pair& stv)
 {
 	this->p = new Pair[stv.maxsize];
 	this->top = stv.top;
@@ -242,9 +240,9 @@ class Queue_Pair : public Set_Pair {
 	int maxsize;
 public:
 	Queue_Pair(int nrel); //constructor
-	Queue_Pair(const Queue_Pair& qp); //copy-constructor		
+	Queue_Pair(const Queue_Pair& qp); //copy-constructor
 	void enqueue(const Pair& p); //adaugare in coada un element de tip pereche
-	void dequeue(); //stergere element din coada 
+	void dequeue(); //stergere element din coada
 	Queue_Pair& operator=(const Queue_Pair& qp); //operator de atribuire
 	Pair qfront(); //extrage urm element din coada
 	bool empty(); //verifica daca este coada goala
@@ -275,7 +273,7 @@ void Queue_Pair::enqueue(const Pair& per)
 	}
 	else
 	{
-		p[back] = per; 
+		p[back] = per;
 		back++;
 		n=back;
 	}
@@ -358,11 +356,11 @@ int main()
 {
 	//citirea a n obiecte de tip Set_Pair si afisarea lor
 	/*int n;
-	cin >> n; 
-	
+	cin >> n;
+
 		Set_Pair* v = new Set_Pair[n];
-	
-	
+
+
 	for (int i = 0; i < n; i++)
 	{
 		cin >> v[i];
@@ -372,7 +370,7 @@ int main()
 		cout << v[i];
 	}
 	delete[] v;*/
-	
+
 	//efectele mostenirii pt clasa Stack_Pair
 	/*Pair a(1, 1), b(2, 1), c(2, 7), d(-1, 3), e(2, -5);
 	Stack_Pair stv(5);
@@ -456,7 +454,7 @@ int main()
 		cout << stv3.peek() <<endl;
 		stv3.pop();
 	}*/
-	
+
 
 
 	//test op= si copy constructor pt queue_Pair
