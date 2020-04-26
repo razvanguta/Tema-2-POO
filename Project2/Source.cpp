@@ -1,4 +1,5 @@
 #include<iostream>
+#include <stdlib.h>
 using namespace std;
 
 //Pereche(int,int)
@@ -71,6 +72,7 @@ public:
 		}catch (bool i)
 		{
 			cout << "Outside the range/n";
+			exit(EXIT_FAILURE);
 		}
 		for (int i = x; i < n - 1; i++) { p[i] = p[i + 1]; }   //sterge element din multime
 		n--;
@@ -86,6 +88,7 @@ Set_Pair::Set_Pair(int n) : n(n)
 	catch (bad_alloc elem)
 	{
 		cout << "Allocation failure\n";
+		exit(EXIT_FAILURE);
 	}
 }
 Set_Pair::Set_Pair(const Set_Pair& sp)
@@ -162,10 +165,10 @@ public:
 	void pop(); //sterge element de tip pereche din stiva
 	Pair peek();//returneaza vf stivei
 	bool empty();//verifica daca stiva e goala sau nu
-	void typeobj() override { cout << "STACK\n"; } //pentru a ilustra conceptul de functie virtuala
+	void typeobj()  { cout << "STACK\n"; } //pentru a ilustra conceptul de functie virtuala
 	~Stack_Pair();//destructor stiva
 };
-Stack_Pair::Stack_Pair(int nrel) : Set_Pair(nrel)
+Stack_Pair::Stack_Pair(int nrel) : Set_Pair(nrel)//trimitem nrel catre clasa pe care o mostenim pentru a folosi array-ul de acolo drept stiva
 {
 	top = 0;
 	maxsize = nrel;
@@ -246,7 +249,7 @@ public:
 	Queue_Pair& operator=(const Queue_Pair& qp); //operator de atribuire
 	Pair qfront(); //extrage urm element din coada
 	bool empty(); //verifica daca este coada goala
-	void typeobj() override { cout << "QUEUE\n"; } //pentru a ilustra conceptul de functie virtuala
+	void typeobj() { cout << "QUEUE\n"; } //pentru a ilustra conceptul de functie virtuala
 	~Queue_Pair(); //distrugere obiect
 };
 Queue_Pair::Queue_Pair(int nrel) : Set_Pair(nrel)
@@ -357,10 +360,7 @@ int main()
 	//citirea a n obiecte de tip Set_Pair si afisarea lor
 	/*int n;
 	cin >> n;
-
 		Set_Pair* v = new Set_Pair[n];
-
-
 	for (int i = 0; i < n; i++)
 	{
 		cin >> v[i];
@@ -371,32 +371,10 @@ int main()
 	}
 	delete[] v;*/
 
-	//efectele mostenirii pt clasa Stack_Pair
-	/*Pair a(1, 1), b(2, 1), c(2, 7), d(-1, 3), e(2, -5);
-	Stack_Pair stv(5);
-	stv.push(a);
-	stv.push(b);
-	stv.push(c);
-	stv.push(d);
-	stv.push(e);
-	cout << stv[0] << " " << stv[1] << endl;
-	cout << stv;*/
-
-	//efectele mostenirii pt clasa Queue_Pair
-	/*Pair a(1, 1), b(2, 1), c(2, 7), d(-1, 3), e(2, -5);
-	Queue_Pair q(5);
-	q.enqueue(a);
-	q.enqueue(b);
-	q.enqueue(c);
-	q.enqueue(d);
-	q.enqueue(e);
-	cout << q[0] << " " << q[1] << endl;
-	cout << q;*/
-
 	//test stiva simulata prin 2 cozi;
 	/*Set_Pair a;
 	cin >> a;
-	Stack_Pair s(a.getnrel());
+	Stack_Pair s(a.getnrel()); //declaram si o stiva,pentru a verifica la finalul executiei daca simularea prin 2 cozi se face cum trebuie, comparand rezultatele
 	Queue_Pair q1(a.getnrel()), q2(a.getnrel());
 	simulation(q1, q2, a, s);*/
 
